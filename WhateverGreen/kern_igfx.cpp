@@ -1914,6 +1914,8 @@ void IGFX::applyFramebufferPatches() {
 			else if (callbackIGFX->currentFramebufferOpt->loadIndex != KernelPatcher::KextInfo::Unloaded)
 				success = applyPlatformInformationListPatch(framebufferId, static_cast<FramebufferICLHP *>(gPlatformInformationList));
 		}
+		else if (cpuGeneration == CPUInfo::CpuGeneration::TigerLake)
+			success = applyPlatformInformationListPatch(framebufferId, static_cast<FramebufferICLLP *>(gPlatformInformationList));
 
 		if (success)
 			DBGLOG("igfx", "patching framebufferId 0x%08X successful", framebufferId);
@@ -1993,6 +1995,8 @@ void IGFX::applyHdmiAutopatch() {
 		else if (callbackIGFX->currentFramebufferOpt->loadIndex != KernelPatcher::KextInfo::Unloaded)
 			success = applyDPtoHDMIPatch(framebufferId, static_cast<FramebufferICLHP *>(gPlatformInformationList));
 	}
+	else if (cpuGeneration == CPUInfo::CpuGeneration::TigerLake)
+		success = applyDPtoHDMIPatch(framebufferId, static_cast<FramebufferICLLP *>(gPlatformInformationList));
 
 	if (success)
 		DBGLOG("igfx", "hdmi patching framebufferId 0x%08X successful", framebufferId);
