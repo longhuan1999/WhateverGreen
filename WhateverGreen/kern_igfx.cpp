@@ -149,6 +149,13 @@ void IGFX::init() {
 		case CPUInfo::CpuGeneration::ArrowLake:
 			gPlatformGraphicsSupported = false;
 			break;
+		case CPUInfo::CpuGeneration::AlderLake:
+			supportsGuCFirmware = true;
+			currentGraphics = &kextIntelICL;
+			currentFramebuffer = &kextIntelICLLPFb;
+			currentFramebufferOpt = &kextIntelICLHPFb;
+			modDVMTCalcFix.available = true;
+			break;
 		default:
 			SYSLOG("igfx", "found an unsupported processor 0x%X:0x%X, please report this!", family, model);
 			break;
@@ -1916,6 +1923,8 @@ void IGFX::applyFramebufferPatches() {
 		}
 		else if (cpuGeneration == CPUInfo::CpuGeneration::TigerLake)
 			success = applyPlatformInformationListPatch(framebufferId, static_cast<FramebufferICLLP *>(gPlatformInformationList));
+		else if (cpuGeneration == CPUInfo::CpuGeneration::AlderLake)
+			success = applyPlatformInformationListPatch(framebufferId, static_cast<FramebufferICLLP *>(gPlatformInformationList));
 
 		if (success)
 			DBGLOG("igfx", "patching framebufferId 0x%08X successful", framebufferId);
@@ -1996,6 +2005,8 @@ void IGFX::applyHdmiAutopatch() {
 			success = applyDPtoHDMIPatch(framebufferId, static_cast<FramebufferICLHP *>(gPlatformInformationList));
 	}
 	else if (cpuGeneration == CPUInfo::CpuGeneration::TigerLake)
+		success = applyDPtoHDMIPatch(framebufferId, static_cast<FramebufferICLLP *>(gPlatformInformationList));
+	else if (cpuGeneration == CPUInfo::CpuGeneration::AlderLake)
 		success = applyDPtoHDMIPatch(framebufferId, static_cast<FramebufferICLLP *>(gPlatformInformationList));
 
 	if (success)
