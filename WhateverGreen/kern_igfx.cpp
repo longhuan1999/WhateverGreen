@@ -145,7 +145,6 @@ void IGFX::init() {
 			modBlackScreenFix.available = true;
 			break;
 		case CPUInfo::CpuGeneration::RocketLake:
-		case CPUInfo::CpuGeneration::AlderLake:
 		case CPUInfo::CpuGeneration::RaptorLake:
 		case CPUInfo::CpuGeneration::ArrowLake:
 			gPlatformGraphicsSupported = false;
